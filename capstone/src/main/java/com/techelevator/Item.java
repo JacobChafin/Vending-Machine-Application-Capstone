@@ -29,6 +29,9 @@ public class Item {
         return "Noise";
     }
 
+    @Override
+    public String toString() {
+        return name + ", " + cost + ", " + getSound();
 
-
+    }
 }

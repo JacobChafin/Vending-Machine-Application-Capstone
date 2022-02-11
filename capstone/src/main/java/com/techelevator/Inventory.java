@@ -82,10 +82,10 @@ public class Inventory {
         }
     }
 
-    public void updateInventory(String itemSlot ){
+    public Item vendItem(String itemSlot ){
         //Pass location into this method, so we know to remove first item from list
         //itemSlot will describe the location
-        currentInventory.get(itemSlot).remove(0);
+        return currentInventory.get(itemSlot).remove(0);
     }
 
     public int checkInventorySlot(String itemSlot){
