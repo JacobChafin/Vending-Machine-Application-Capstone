@@ -8,14 +8,20 @@ public class VendingMachine {
     Inventory inventory;
     double balance = 0;
 
-
+//create and load the inventory form file
+//start the main text menu
     public void run() {
         inventory = new Inventory();
         inventory.loadInventory();
         textMenu();
     }
 
+
+//run the main text menu
     public void textMenu() {
+
+    //displays main menu options.
+    //asks for user input, continues to ask until a valid entry is made
         System.out.println();
         System.out.println("(1) Display Vending Machine Items");
         System.out.println("(2) Purchase");
@@ -30,133 +36,194 @@ public class VendingMachine {
             // Pretty up!!
             userInput = scanner.nextLine();
         }
+
+    //a valid entry has been made, do the appropriate action below
+
+        //display the inventory and return to the text menu
         if (userInput.equals("1")) {
             inventory.displayInventory();
             textMenu();
-       } else if (userInput.equals("2")) {
+        }
+
+        //go to the purchase menu
+        else if (userInput.equals("2")) {
             purchaseMenu();
-        } else if (userInput.equals("3")) {
+        }
+
+        //go to the exit method to exit
+        else if (userInput.equals("3")) {
             exit();
         }
         //Easter Egg!!
     }
-        public void exit() {
-            System.out.println("Thanks for Using Vendo-Matic 800!!");
-            System.exit(1);
 
-        }
-        public void purchaseMenu() {
 
+//exit the program
+    public void exit() {
+        System.out.println("Thanks for Using Vendo-Matic 800!!");
+        System.exit(1);
+
+    }
+
+
+//the purchase menu
+    public void purchaseMenu() {
+    //displays purchase menu options
+    //asks for user input, continues to ask until valid entry is made
+        System.out.println("(1) Feed Money");
+        System.out.println("(2) Select Product");
+        System.out.println("(3) Finish Transaction");
+        System.out.println("Current Balance: $" + balance);
+        // Pretty up!!
+        userInput = scanner.nextLine();
+        while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
+            System.out.println("Invalid Entry, Please Try Again!");
             System.out.println("(1) Feed Money");
             System.out.println("(2) Select Product");
             System.out.println("(3) Finish Transaction");
             System.out.println("Current Balance: $" + balance);
             // Pretty up!!
             userInput = scanner.nextLine();
-            while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
-                System.out.println("Invalid Entry, Please Try Again!");
-                System.out.println("(1) Feed Money");
-                System.out.println("(2) Select Product");
-                System.out.println("(3) Finish Transaction");
-                System.out.println("Current Balance: $" + balance);
-                // Pretty up!!
-                userInput = scanner.nextLine();
-            }
-            if (userInput.equals("1")) {
-                feedMoney();
-
-            } else if (userInput.equals("2")) {
-                selectProduct();
-
-            } else if (userInput.equals("3")) {
-               finishTransaction();
-            }
-
         }
-             public void feedMoney() {
-                 System.out.println();
-                 System.out.println("Select Currency to Enter");
-                 System.out.println("(1) $1.00");
-                 System.out.println("(2) $2.00");
-                 System.out.println("(3) $5.00");
-                 System.out.println("(4) $10.00");
-                 System.out.println("(5) Done Feeding Money");
-                 System.out.println("Current Balance: $" + balance);
-                 // Pretty up!!
-                 userInput = scanner.nextLine();
-                 while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4") ||userInput.equals("5"))) {
-                     System.out.println("Select Currency to Enter");
-                     System.out.println("(1) $1.00");
-                     System.out.println("(2) $2.00");
-                     System.out.println("(3) $5.00");
-                     System.out.println("(4) $10.00");
-                     System.out.println("(5) Done Feeding Money");
-                     System.out.println("Current Balance: $" + balance);
-                     // Pretty up!!
-                     userInput = scanner.nextLine();
-                 }
-                 if (userInput.equals("1")) {
-                     balance = balance + 1;
-                 } else if (userInput.equals("2")) {
-                    balance = balance + 2;
-                 } else if (userInput.equals("3")) {
-                    balance = balance + 5;
-                 } else if (userInput.equals("4")) {
-                     balance = balance + 10;
-                 } else if (userInput.equals("5")) {
-                     purchaseMenu();
-                 }
-                 feedMoney();
-             }
 
-          public void selectProduct() {
-              inventory.displayInventory();
-              System.out.println("Please Enter an Item Slot");
-              userInput = scanner.nextLine();
-              while (!inventory.getSlots().contains(userInput)) {
-                  System.out.println("Invalid Slot");
-                  purchaseMenu();
-                  // Pretty up!!
-                  userInput = scanner.nextLine();
-              }
-              if (inventory.checkInventorySlot(userInput) == 0) {
-                  System.out.println("SOLD OUT!");
-                  purchaseMenu();
-              } else if (balance < inventory.getItemAtSlot(userInput).getCost()) {
-                  System.out.println("Sorry not enough money to purchase " + inventory.getItemAtSlot(userInput).getName());
-                  purchaseMenu();
-              } else {
-                  System.out.println(inventory.vendItem(userInput));
-                  balance = balance - inventory.getItemAtSlot(userInput).getCost();
-                  System.out.println("$" + balance);
-                  purchaseMenu();
-              }
+    //a valid entry has been made, do the appropriate action below
 
-          }
-          public void finishTransaction() {
+        //go to the feed money menu
+        if (userInput.equals("1")) {
+            feedMoney();
+        }
+
+        //go to the select product menu
+        else if (userInput.equals("2")) {
+            selectProduct();
+        }
+
+        //go to the finishTransaction method to give change
+        else if (userInput.equals("3")) {
+            finishTransaction();
+        }
+
+    }
+
+
+//the feed money menu
+    public void feedMoney() {
+
+    //displays defined amounts of dollars for the user to feed into the machine
+    //asks for user input, continues to ask until valid entry is made
+        System.out.println();
+        System.out.println("Select Currency to Enter");
+        System.out.println("(1) $1.00");
+        System.out.println("(2) $2.00");
+        System.out.println("(3) $5.00");
+        System.out.println("(4) $10.00");
+        System.out.println("(5) Done Feeding Money");
+        System.out.println("Current Balance: $" + balance);
+        // Pretty up!!
+        userInput = scanner.nextLine();
+        while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4") || userInput.equals("5"))) {
+            System.out.println("Select Currency to Enter");
+            System.out.println("(1) $1.00");
+            System.out.println("(2) $2.00");
+            System.out.println("(3) $5.00");
+            System.out.println("(4) $10.00");
+            System.out.println("(5) Done Feeding Money");
+            System.out.println("Current Balance: $" + balance);
+            // Pretty up!!
+            userInput = scanner.nextLine();
+        }
+
+    //a valid entry has been made, add the appropriate value to balance and return to feed money menu
+    //OR go back to purchase menu if user is done feeding money
+
+        if (userInput.equals("1")) {
+            balance = balance + 1;
+        } else if (userInput.equals("2")) {
+            balance = balance + 2;
+        } else if (userInput.equals("3")) {
+            balance = balance + 5;
+        } else if (userInput.equals("4")) {
+            balance = balance + 10;
+        } else if (userInput.equals("5")) {
+            purchaseMenu();
+        }
+        feedMoney();
+    }
+
+
+//the select product menu
+    public void selectProduct() {
+        //display the inventory for user to choose from and ask for user to input a slot
+        inventory.displayInventory();
+        System.out.println("Please Enter an Item Slot");
+        userInput = scanner.nextLine();
+
+        //if user input is not a valid slot, return to the purchase menu
+        if(!inventory.getSlots().contains(userInput)) {
+            System.out.println("Invalid Slot");
+            purchaseMenu();
+        }
+
+        //if slot has no items left, indicate sold out and return to the purchase menu
+        if (inventory.checkInventorySlot(userInput) == 0) {
+            System.out.println("SOLD OUT!");
+            purchaseMenu();
+        }
+        //if item costs more than the current balance available, indicate and return to purchase menu
+        else if (balance < inventory.getItemAtSlot(userInput).getCost()) {
+            System.out.println("Sorry not enough money to purchase " + inventory.getItemAtSlot(userInput).getName());
+            purchaseMenu();
+        }
+        //remove selected item from inventory, and print out its Name, cost, sound using the Item class toString method
+        //subtract cost of item from balance and return to purchase menu
+        else {
+            System.out.println(inventory.vendItem(userInput));
+            balance = balance - inventory.getItemAtSlot(userInput).getCost();
+            System.out.println("$" + balance);
+            purchaseMenu();
+        }
+
+    }
+
+
+//return change and go back to the main text menu
+    public void finishTransaction() {
         int numberOfQuarters = 0;
         int numberOfDimes = 0;
         int numberOfNickles = 0;
+
+        //figure out how many quarters can be given from balance
         numberOfQuarters = (int) (balance / .25);
+        //subtract value of quarters given from balance
         balance = balance - (numberOfQuarters * .25);
+
+        //figure out how many dimes can be given from remaining balance
         numberOfDimes = (int) (balance / .1);
+        //subtract value of dimes given from remaining balance
         balance = balance - (numberOfDimes * .1);
+
+        //figure out how many nickels can be given from remaining balance
         numberOfNickles = (int) (balance / .05);
+        //subtract value of nickels from remaining balance - balance should be zero now.
         balance = balance - (numberOfNickles * .05);
+
+
+
+
         // 1.40 / .25 = (int) 5.6 is 5
-           // numberOfQuarters = (int) 1.40 / .25
-            // balance  = balance - (5 * .25)
-            //balance = 1.40 - 1.25 = .15
-            //numberOfDimes = (int) balance (.15) / .1
-            // balance = balance - .1 ¢
-                    //numberOfNickles = (int)
-              System.out.println("Here is your change!: ");
-              System.out.println(numberOfQuarters + " Quarters");
-              System.out.println(numberOfDimes + " Dimes");
-              System.out.println(numberOfNickles + " Nickles");
-              System.out.println(balance);
-textMenu();
-}
+        // numberOfQuarters = (int) 1.40 / .25
+        // balance  = balance - (5 * .25)
+        //balance = 1.40 - 1.25 = .15
+        //numberOfDimes = (int) balance (.15) / .1
+        // balance = balance - .1 ¢
+        //numberOfNickles = (int)
+        System.out.println("Here is your change!: ");
+        System.out.println(numberOfQuarters + " Quarters");
+        System.out.println(numberOfDimes + " Dimes");
+        System.out.println(numberOfNickles + " Nickles");
+        System.out.println(balance);
+        textMenu();
+    }
 
 }
 

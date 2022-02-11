@@ -24,14 +24,18 @@ public class Inventory {
         File dataFile = new File("vendingmachine.csv");
         try (Scanner dataInput = new Scanner(dataFile)) {
             while (dataInput.hasNextLine()) {
-                String currentLine = dataInput.nextLine();
-                String[] parsedLine = currentLine.split("\\|");
+
                 List<Item> slotInventory = new ArrayList<>();
                 Item currentItem = null;
-                //A1 -> parseLine[0]
-                //Potato -> Crisps parseLine[1]
-                //3.05 -> parseLine[2]
-                //Chip -> parseLine[3]
+
+                String currentLine = dataInput.nextLine();
+                String[] parsedLine = currentLine.split("\\|");
+
+                //item slot @ parseLine[0] -- "A1"
+                //item name @ parseLine[1] -- "Crisps"
+                //item cost @ parseLine[2] -- "3.05"
+                //item type @ parseLine[3] -- "Chip"
+
                 if (parsedLine[3].equals("Chip")) {
                     currentItem = new Chips(parsedLine[1], Double.parseDouble(parsedLine[2]));
                 } else if (parsedLine[3].equals("Candy")) {
