@@ -8,12 +8,18 @@ public class Inventory {
     private Map<String, List<Item>> currentInventory = new HashMap<>(); //Lets us store any of the objects that are type item
     //Map currentInventory is of a string which corresponds to an item slot
     //The list of items is the collections of items at that specific item slot
+    private List<String> slots = new ArrayList<>(Arrays.asList("A1" , "A2" , "A3" ,"A4" , "B1" ,"B2" , "B3" , "B4" , "C1" , "C2" , "C3" , "C4", "D1", "D2" , "D3" ,"D4" ));
+
+    public List<String> getSlots() {
+        return slots;
+    }
 
     public void loadInventory() {
         String location;
         String name;
         String itemType;
         double cost;
+
 
         File dataFile = new File("vendingmachine.csv");
         try (Scanner dataInput = new Scanner(dataFile)) {
@@ -62,7 +68,7 @@ public class Inventory {
     public void displayInventory(){
         //Print entire inventory to console per unique location of each item
         // Print location, price, name, quantity
-        List<String> slots = new ArrayList<>(Arrays.asList("A1" , "A2" , "A3" ,"A4" , "B1" ,"B2" , "B3" , "B4" , "C1" , "C2" , "C3" , "C4", "D1", "D2" , "D3" ,"D4" ));
+
         for (int i = 0; i < slots.size() ; i++) {
             List<Item> currentItem = currentInventory.get(slots.get(i));
             if (currentItem.isEmpty()) {
@@ -86,7 +92,9 @@ public class Inventory {
         //Returns quantity of items at itemSlot (quantity.size)
      return currentInventory.get(itemSlot).size();
 
-
+    }
+    public Item getItemAtSlot(String itemSlot) {
+        return currentInventory.get(itemSlot).get(0);
     }
 
 }
