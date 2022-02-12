@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class VendingMachine {
+    // set up scanner and set up variables
+    // transaction log created and big decimal object for conversions
     Scanner scanner =new Scanner(System.in);
     String userInput;
     Inventory inventory;
@@ -13,11 +15,12 @@ public class VendingMachine {
     BigDecimal balanceBigDecimal;
 
 
-//create and load the inventory form file
-//start the main text menu
+//create and load the inventory from file
+//print the intro and start main text menu
     public void run() {
         inventory = new Inventory();
         inventory.loadInventory();
+        // loads the inventory from the text file by ...-- see inventory comments
         System.out.println();
         System.out.println("******************************************");
         System.out.println("****                                  ****");
@@ -26,6 +29,7 @@ public class VendingMachine {
         System.out.println("******************************************");
         System.out.println("************by Umbrella Corp.*************");
         System.out.println();
+        // runs text menu
         textMenu();
     }
 
@@ -41,6 +45,7 @@ public class VendingMachine {
         System.out.println("(3) Exit");
         // Pretty up!!
         userInput = scanner.nextLine();
+        // user input ^^ needs to be 1, 2, or 3 to pass the while loop (if input is correct while loop is skipped)
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
             System.out.println();
             System.out.println("Invalid Entry, Please Try Again!");
@@ -51,31 +56,33 @@ public class VendingMachine {
             userInput = scanner.nextLine();
         }
 
-    //a valid entry has been made, do the appropriate action below
+    //a valid entry has been made, do the appropriate action below we have input as 1, 2, or 3 at this point
 
-        //display the inventory and return to the text menu
+        //display the inventory and return to the text menu if input was 1
         if (userInput.equals("1")) {
             inventory.displayInventory();
+            // see inventory displayInventory() ^^
             textMenu();
         }
 
-        //go to the purchase menu
+        //go to the purchase menu if input is 2
         else if (userInput.equals("2")) {
             purchaseMenu();
         }
 
-        //go to the exit method to exit
+        //go to the exit method to exit if inout is 3
         else if (userInput.equals("3")) {
             exit();
         }
-        //Easter Egg!!
+        //Easter Egg!! need change the while loop above
     }
 
 
 //exit the program
     public void exit() {
         System.out.println("Thanks for Using Vendo-Matic 800!!");
-        System.exit(1);
+        System.exit(0);
+        // ends the program successful termination
 
     }
 
