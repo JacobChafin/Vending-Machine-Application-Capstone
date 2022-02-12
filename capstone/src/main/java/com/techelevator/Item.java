@@ -31,7 +31,7 @@ public class Item {
 
     @Override
     public String toString() {
+        // getSound is overrode from children
         return name + ", " + cost + ", " + getSound();
-
     }
 }

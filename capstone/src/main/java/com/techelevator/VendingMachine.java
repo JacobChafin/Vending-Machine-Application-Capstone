@@ -62,6 +62,7 @@ public class VendingMachine {
         if (userInput.equals("1")) {
             inventory.displayInventory();
             // see inventory displayInventory() ^^
+            // runs text menu
             textMenu();
         }
 
@@ -101,7 +102,7 @@ public class VendingMachine {
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
         System.out.println("Current Balance: $" + balanceBigDecimal);
-        // Pretty up!!
+        // always shows balance
         userInput = scanner.nextLine();
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
             System.out.println("Invalid Entry, Please Try Again!");
@@ -113,19 +114,19 @@ public class VendingMachine {
             userInput = scanner.nextLine();
         }
 
-    //a valid entry has been made, do the appropriate action below
+    //a valid entry has been made (1, 2, 3), do the appropriate action below
 
-        //go to the feed money menu
+        //go to the feed money menu if 1
         if (userInput.equals("1")) {
             feedMoney();
         }
 
-        //go to the select product menu
+        //go to the select product menu if 2
         else if (userInput.equals("2")) {
             selectProduct();
         }
 
-        //go to the finishTransaction method to give change
+        //go to the finishTransaction method to give change if 3
         else if (userInput.equals("3")) {
             finishTransaction();
         }
@@ -134,9 +135,11 @@ public class VendingMachine {
 
 
 //the feed money menu
+    // run this if 1 is selected on purchase menu above
     public void feedMoney() {
 
-    //displays defined amounts of dollars for the user to feed into the machine
+    //displays defined amounts of dollars for the user to feed into the machine sorted by user options 1 = $1, 2= $2, 3 = $5 and 4 = $10
+        // 5 is an option to finish feeding money and returns to the purchase menu
     //asks for user input, continues to ask until valid entry is made
         System.out.println();
         System.out.println("******************************************");
@@ -153,6 +156,7 @@ public class VendingMachine {
         // Pretty up!!
         userInput = scanner.nextLine();
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4") || userInput.equals("5"))) {
+            // added logic to accept user input for options 4 and 5
             System.out.println("Select Currency to Enter");
             System.out.println("(1) $1.00");
             System.out.println("(2) $2.00");
@@ -164,12 +168,14 @@ public class VendingMachine {
             userInput = scanner.nextLine();
         }
 
-    //a valid entry has been made, add the appropriate value to balance and return to feed money menu
-    //log the money fed and updated balance to the log file
-    //OR go back to purchase menu if user is done feeding money
+    //a valid entry has been made (1, 2, 3, 4, 5) add the appropriate value to balance and return to feed money menu
+    //log the money fed and updated balance to the log file (1,2,3,4)
+    //OR go back to purchase menu if user is done feeding money (5)
 
         if (userInput.equals("1")) {
             balance = balance + 1;
+            // after we update the balance we log the feed money event (1,2,3,4) with the updated value and the amount fed
+            //2022-02-11 08:51:17 PM FEED MONEY: Fed$-1.00 updated balance-$1.00 (balance was 0 fed a dollar and updated balance became a dollar)
             transactionLog.logFeedMoneyAudit(1,balance);
         } else if (userInput.equals("2")) {
             balance = balance + 2;
@@ -182,8 +188,10 @@ public class VendingMachine {
             transactionLog.logFeedMoneyAudit(10,balance);
         } else if (userInput.equals("5")) {
             purchaseMenu();
+            // if 5 is entered send back to purchase menu with no further feed action
         }
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
+        //loops until 5 is put in (recursive call, calls itself)
         feedMoney();
     }
 
@@ -197,17 +205,24 @@ public class VendingMachine {
 
         //if user input is not a valid slot, return to the purchase menu
         if(!inventory.getSlots().contains(userInput)) {
+            // look through the "slots" list and sees if  userInput is not one of the strings in the list
             System.out.println("Invalid Slot");
+            //if userInput does not match a sting in the "slots" list then print invalid slot and return to purchase menu
             purchaseMenu();
         }
-
+        // at this point we know that they have entered a valid slot  (matching a string in the list "slots")
         //if slot has no items left, indicate sold out and return to the purchase menu
         if (inventory.checkInventorySlot(userInput) == 0) {
+            // takes the int returned from checkInventorySlot() and checks if it is 0
+            // if it is the item is out and we print sold out and return to the purchase menu
             System.out.println("SOLD OUT!");
             purchaseMenu();
         }
         //if item costs more than the current balance available, indicate and return to purchase menu
         else if (balance < inventory.getItemAtSlot(userInput).getCost()) {
+            // gets an Item object from getItemAtSlot and gets the cost from that item object
+            // We compare the cost from the item object to our balance (making sure we have enough money to buy said item)
+            // If we can't afford it (balance is less than inventory.getItemAtSlot(userInput).getCost())  print out not enough+ item name and return to purchase menu
             System.out.println("Sorry not enough money to purchase " + inventory.getItemAtSlot(userInput).getName());
             purchaseMenu();
         }
@@ -217,13 +232,20 @@ public class VendingMachine {
         //subtract cost of item from balance and return to purchase menu
         else {
             transactionLog.logSaleAudit(inventory.getItemAtSlot(userInput),userInput,balance);
-
-            //both print out and remove item from inventory in one step
+// logged transaction by providing (Item item, String location, Double balance) to logSaleAudit()
+            // updating balance after the log  (for the purpose of the log the balance update is calculated manually)
             balance = balance - inventory.getItemAtSlot(userInput).getCost();
-            System.out.println(inventory.vendItem(userInput));
+            // vendItem preforms a removal of the Item from
 
+
+            System.out.println(inventory.vendItem(userInput));
+            // prints all the Item details and the sound
+            // Removes the item at location userInput and calls the items toString to print its name, price and sound(override from child)
+//both print out and remove item from inventory in one step
+            //System.out.println(item.toString)
             balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
             System.out.println("$" + balanceBigDecimal);
+            // print out new balance and return to purchase menu
             purchaseMenu();
         }
 
@@ -235,7 +257,8 @@ public class VendingMachine {
         int numberOfQuarters = 0;
         int numberOfDimes = 0;
         int numberOfNickles = 0;
-
+        // replacing balance and turning it into an amount of quarters dimes and nickles
+        // logging the change
         transactionLog.logGiveChangeAudit(balance);
 
         //figure out how many quarters can be given from balance

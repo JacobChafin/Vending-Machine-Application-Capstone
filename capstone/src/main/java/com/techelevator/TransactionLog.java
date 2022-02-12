@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class TransactionLog {
+    //writing to a file using different methods to record 3 different types of state change, FEED money, Purchase, and Change
+    //create a file object so we can try with resources and write to file
     File transactionLogFile = new File("Log.txt");
-    LocalDateTime dateTime = LocalDateTime.now();
+    // represents current date and time which is used in every entry to the log
     LocalDate today = LocalDate.now();
     LocalTime now = LocalTime.now();
 
@@ -25,6 +27,7 @@ public class TransactionLog {
 //    }
     public String civilianTime(){
         //01/01/2016 12:00:15 PM
+        // notes for manual construction using second, minutes, and hours adding zeros where needed and AM, PM (12 hour time)
         int convertedHour;
         String convertedMinute = Integer.toString(now.getMinute());
         String convertedSecond = Integer.toString(now.getSecond());
@@ -56,9 +59,10 @@ public class TransactionLog {
     }
 
     public void logSaleAudit(Item item, String location, Double balance){
-
+// need argument item, location, and balance to write the line that will record a sale
+        // reference logFeedMoneyAudit as it works the same but with a different println using an extra argument
+        // example : //01/01/2016 12:00:20 PM Crunchie B4 $10.00 $8.50  (balance is manually calculated during println)
         try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
-            //01/01/2016 12:00:20 PM Crunchie B4 $10.00 $8.50
             dataOutput.println(civilianTime() + " " + item.getName() + " " + location + " $" + balance + " $" + (balance-item.getCost()));
 
         } catch (FileNotFoundException e) {
@@ -68,8 +72,15 @@ public class TransactionLog {
     }
 
     public void logFeedMoneyAudit(int fedMoney, Double balance){
-        //01/01/2016 12:00:15 PM FEED MONEY: $5.00 $10.00
+        //01/01/2016 12:00:15 PM FEED MONEY: (fedMoney: $5.00, balance(which the updated after the feed): $10.00)
+        // how it should look ^^
+        // the method that logs when a feed money state change happens saves to file and closes
+        // takes 2 arguments fedMoney and balance to write a text line to a document recording the transaction
+        //try with resources closes document after it runs
+        // We are appending to what is currently there by using the wrapper FileOutputStream and append: true
         try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
+            // telling the writer what to put on a new line of the txt
+            //01/01/2016 12:00:15 PM FEED MONEY: $5.00 $10.00
             dataOutput.println(civilianTime() + " FEED MONEY: $" + fedMoney + ".00 $" + balance);
 
         } catch (FileNotFoundException e) {
@@ -77,7 +88,9 @@ public class TransactionLog {
         }
     }
      public void logGiveChangeAudit(double balance){
+        // reference other audits, this is the same but with one argument "balance"
          //01/01/2016 12:01:35 PM GIVE CHANGE: $7.50 $0.00
+         // we cheat and manually set balance to zero but BigDecimal always has other plans
          try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
              dataOutput.println(civilianTime() + " GIVE CHANGE: $" + balance + " $0.00");
 

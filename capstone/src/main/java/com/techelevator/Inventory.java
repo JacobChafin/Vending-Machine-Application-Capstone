@@ -109,10 +109,12 @@ public class Inventory {
                     String name = currentItemList.get(0).getName();
                     // checks the size of the list of items to see how many item objects there are left at the current slot we are checking (controlled by the i in the for loop)
                     int quantity = currentItemList.size();
+                    // prints visual representation of the slot using all the info we gathered ((slot name), price, item name, item quantity at slot)
+                    //(A1) Price: $3.05 Item: Potato Crisps Qty: 5
                     System.out.print("(" + slots.get(i) + ")" + " Price: $" + priceBigDecimal + " Item: " + name + " Qty: " + quantity + " || ");
                 }
-            }
-            else {
+                // same thing as above but print ln
+            } else {
                 // is the end of the row so we println
                 if (currentItemList.isEmpty()) {
                     System.out.println("(" + slots.get(i)+ ") SOLD OUT!");
@@ -129,19 +131,22 @@ public class Inventory {
         System.out.println();
     }
 
+    public int checkInventorySlot(String itemSlot){
+        //Returns quantity of items at itemSlot (quantity.size)
+        // we use this to return the size of the list of items (int)
+     return currentInventory.get(itemSlot).size();
+    }
+
+    public Item getItemAtSlot(String itemSlot) {
+        // gives the 1st item in the slot returning an Item object
+        return currentInventory.get(itemSlot).get(0);
+    }
+
     public Item vendItem(String itemSlot ){
         //Pass location into this method, so we know to remove first item from list
         //itemSlot will describe the location
         return currentInventory.get(itemSlot).remove(0);
-    }
-
-    public int checkInventorySlot(String itemSlot){
-        //Returns quantity of items at itemSlot (quantity.size)
-     return currentInventory.get(itemSlot).size();
-
-    }
-    public Item getItemAtSlot(String itemSlot) {
-        return currentInventory.get(itemSlot).get(0);
+        // removes the item from the list and returns it even if it was the last one
     }
 
 }
