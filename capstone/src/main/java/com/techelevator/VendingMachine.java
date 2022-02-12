@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class VendingMachine {
@@ -7,6 +9,9 @@ public class VendingMachine {
     String userInput;
     Inventory inventory;
     double balance = 0;
+    TransactionLog transactionLog = new TransactionLog();
+    BigDecimal balanceBigDecimal;
+
 
 //create and load the inventory form file
 //start the main text menu
@@ -70,10 +75,11 @@ public class VendingMachine {
     public void purchaseMenu() {
     //displays purchase menu options
     //asks for user input, continues to ask until valid entry is made
+        balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
-        System.out.println("Current Balance: $" + balance);
+        System.out.println("Current Balance: $" + balanceBigDecimal);
         // Pretty up!!
         userInput = scanner.nextLine();
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
@@ -81,7 +87,7 @@ public class VendingMachine {
             System.out.println("(1) Feed Money");
             System.out.println("(2) Select Product");
             System.out.println("(3) Finish Transaction");
-            System.out.println("Current Balance: $" + balance);
+            System.out.println("Current Balance: $" + balanceBigDecimal);
             // Pretty up!!
             userInput = scanner.nextLine();
         }
@@ -118,7 +124,7 @@ public class VendingMachine {
         System.out.println("(3) $5.00");
         System.out.println("(4) $10.00");
         System.out.println("(5) Done Feeding Money");
-        System.out.println("Current Balance: $" + balance);
+        System.out.println("Current Balance: $" + balanceBigDecimal);
         // Pretty up!!
         userInput = scanner.nextLine();
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4") || userInput.equals("5"))) {
@@ -128,25 +134,31 @@ public class VendingMachine {
             System.out.println("(3) $5.00");
             System.out.println("(4) $10.00");
             System.out.println("(5) Done Feeding Money");
-            System.out.println("Current Balance: $" + balance);
+            System.out.println("Current Balance: $" + balanceBigDecimal);
             // Pretty up!!
             userInput = scanner.nextLine();
         }
 
     //a valid entry has been made, add the appropriate value to balance and return to feed money menu
+    //log the money fed and updated balance to the log file
     //OR go back to purchase menu if user is done feeding money
 
         if (userInput.equals("1")) {
             balance = balance + 1;
+            transactionLog.logFeedMoneyAudit(1,balance);
         } else if (userInput.equals("2")) {
             balance = balance + 2;
+            transactionLog.logFeedMoneyAudit(2,balance);
         } else if (userInput.equals("3")) {
             balance = balance + 5;
+            transactionLog.logFeedMoneyAudit(5,balance);
         } else if (userInput.equals("4")) {
             balance = balance + 10;
+            transactionLog.logFeedMoneyAudit(10,balance);
         } else if (userInput.equals("5")) {
             purchaseMenu();
         }
+        balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
         feedMoney();
     }
 
@@ -174,23 +186,32 @@ public class VendingMachine {
             System.out.println("Sorry not enough money to purchase " + inventory.getItemAtSlot(userInput).getName());
             purchaseMenu();
         }
+
+        //log sale of item in log file
         //remove selected item from inventory, and print out its Name, cost, sound using the Item class toString method
         //subtract cost of item from balance and return to purchase menu
         else {
+            transactionLog.logSaleAudit(inventory.getItemAtSlot(userInput),userInput,balance);
+
+            //both print out and remove item from inventory in one step
             System.out.println(inventory.vendItem(userInput));
+
             balance = balance - inventory.getItemAtSlot(userInput).getCost();
-            System.out.println("$" + balance);
+            balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
+            System.out.println("$" + balanceBigDecimal);
             purchaseMenu();
         }
 
     }
 
-
+//log starting balance and 'final balance' to file
 //return change and go back to the main text menu
     public void finishTransaction() {
         int numberOfQuarters = 0;
         int numberOfDimes = 0;
         int numberOfNickles = 0;
+
+        transactionLog.logGiveChangeAudit(balance);
 
         //figure out how many quarters can be given from balance
         numberOfQuarters = (int) (balance / .25);
@@ -200,7 +221,7 @@ public class VendingMachine {
         //figure out how many dimes can be given from remaining balance
         numberOfDimes = (int) (balance / .1);
         //subtract value of dimes given from remaining balance
-        balance = balance - (numberOfDimes * .1);
+        balance = balance - (numberOfDimes * .1) + .009;
 
         //figure out how many nickels can be given from remaining balance
         numberOfNickles = (int) (balance / .05);
@@ -221,7 +242,8 @@ public class VendingMachine {
         System.out.println(numberOfQuarters + " Quarters");
         System.out.println(numberOfDimes + " Dimes");
         System.out.println(numberOfNickles + " Nickles");
-        System.out.println(balance);
+        balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
+        System.out.println(balanceBigDecimal);
         textMenu();
     }
 
