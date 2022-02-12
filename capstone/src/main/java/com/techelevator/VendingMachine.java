@@ -18,6 +18,14 @@ public class VendingMachine {
     public void run() {
         inventory = new Inventory();
         inventory.loadInventory();
+        System.out.println();
+        System.out.println("******************************************");
+        System.out.println("****                                  ****");
+        System.out.println("**** Welcome to the Vendo-Matic 800!! ****");
+        System.out.println("****                                  ****");
+        System.out.println("******************************************");
+        System.out.println("************by Umbrella Corp.*************");
+        System.out.println();
         textMenu();
     }
 
@@ -27,13 +35,14 @@ public class VendingMachine {
 
     //displays main menu options.
     //asks for user input, continues to ask until a valid entry is made
-        System.out.println();
+
         System.out.println("(1) Display Vending Machine Items");
         System.out.println("(2) Purchase");
         System.out.println("(3) Exit");
         // Pretty up!!
         userInput = scanner.nextLine();
         while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
+            System.out.println();
             System.out.println("Invalid Entry, Please Try Again!");
             System.out.println("(1) Display Vending Machine Items");
             System.out.println("(2) Purchase");
@@ -76,6 +85,11 @@ public class VendingMachine {
     //displays purchase menu options
     //asks for user input, continues to ask until valid entry is made
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
+        System.out.println();
+        System.out.println("******************************************");
+        System.out.println("*******  Please select an option  ********");
+        System.out.println("******************************************");
+        System.out.println();
         System.out.println("(1) Feed Money");
         System.out.println("(2) Select Product");
         System.out.println("(3) Finish Transaction");
@@ -118,12 +132,16 @@ public class VendingMachine {
     //displays defined amounts of dollars for the user to feed into the machine
     //asks for user input, continues to ask until valid entry is made
         System.out.println();
-        System.out.println("Select Currency to Enter");
+        System.out.println("******************************************");
+        System.out.println("******  Select Currency to Enter  ********");
+        System.out.println("******************************************");
+        System.out.println("");
         System.out.println("(1) $1.00");
         System.out.println("(2) $2.00");
         System.out.println("(3) $5.00");
         System.out.println("(4) $10.00");
         System.out.println("(5) Done Feeding Money");
+        System.out.println();
         System.out.println("Current Balance: $" + balanceBigDecimal);
         // Pretty up!!
         userInput = scanner.nextLine();
@@ -167,7 +185,7 @@ public class VendingMachine {
     public void selectProduct() {
         //display the inventory for user to choose from and ask for user to input a slot
         inventory.displayInventory();
-        System.out.println("Please Enter an Item Slot");
+        System.out.println("Please Enter an (Item Slot)");
         userInput = scanner.nextLine();
 
         //if user input is not a valid slot, return to the purchase menu
@@ -194,9 +212,9 @@ public class VendingMachine {
             transactionLog.logSaleAudit(inventory.getItemAtSlot(userInput),userInput,balance);
 
             //both print out and remove item from inventory in one step
+            balance = balance - inventory.getItemAtSlot(userInput).getCost();
             System.out.println(inventory.vendItem(userInput));
 
-            balance = balance - inventory.getItemAtSlot(userInput).getCost();
             balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
             System.out.println("$" + balanceBigDecimal);
             purchaseMenu();

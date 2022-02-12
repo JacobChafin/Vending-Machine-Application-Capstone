@@ -2,6 +2,8 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class Inventory {
@@ -72,18 +74,38 @@ public class Inventory {
     public void displayInventory(){
         //Print entire inventory to console per unique location of each item
         // Print location, price, name, quantity
-
+        System.out.println();
+        System.out.println("________________________________________________________________________________________________________________________________________________________________________________");
         for (int i = 0; i < slots.size() ; i++) {
             List<Item> currentItem = currentInventory.get(slots.get(i));
-            if (currentItem.isEmpty()) {
-                System.out.println( slots.get(i) + "SOLD OUT!");
-            } else {
-                double price = currentItem.get(0).getCost();
-                String name = currentItem.get(0).getName();
-                int quantity = currentItem.size();
-                System.out.println(slots.get(i) + ", " + price + ", " + name + ", " + quantity);
+            //normally sout.print
+            //if i%3 is 0, sout.println
+            boolean isEndOfRow = (i==3 || i == 7 || i == 11 || i==15);
+            if(!isEndOfRow){
+                if (currentItem.isEmpty()) {
+                    System.out.println("(" + slots.get(i)+ ") SOLD OUT!");
+                } else {
+                    double price = currentItem.get(0).getCost();
+                    BigDecimal priceBigDecimal = new BigDecimal(price+.009).setScale(2, RoundingMode.DOWN);
+                    String name = currentItem.get(0).getName();
+                    int quantity = currentItem.size();
+                    System.out.print("(" + slots.get(i) + ")" + " Price: $" + priceBigDecimal + " Item: " + name + " Qty: " + quantity + " || ");
+                }
+            }
+            else {
+                if (currentItem.isEmpty()) {
+                    System.out.println("(" + slots.get(i)+ ") SOLD OUT!");
+                } else {
+                    double price = currentItem.get(0).getCost();
+                    BigDecimal priceBigDecimal = new BigDecimal(price+.009).setScale(2, RoundingMode.DOWN);
+                    String name = currentItem.get(0).getName();
+                    int quantity = currentItem.size();
+                    System.out.println("(" + slots.get(i) + ")" + " Price: $" + priceBigDecimal + " Item: " + name + " Qty: " + quantity);
+                }
             }
         }
+        System.out.println("________________________________________________________________________________________________________________________________________________________________________________");
+        System.out.println();
     }
 
     public Item vendItem(String itemSlot ){
