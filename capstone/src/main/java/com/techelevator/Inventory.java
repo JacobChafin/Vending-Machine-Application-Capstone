@@ -11,9 +11,26 @@ public class Inventory {
     //Map currentInventory is of a string which corresponds to an item slot
     //The list of items is the collections of items at that specific item slot
     private List<String> slots = new ArrayList<>(Arrays.asList("A1" , "A2" , "A3" ,"A4" , "B1" ,"B2" , "B3" , "B4" , "C1" , "C2" , "C3" , "C4", "D1", "D2" , "D3" ,"D4" ));
+    File dataFile;
+    SalesReport salesReport = new SalesReport();
+
+    public Inventory(String dataFileName) {
+        dataFile = new File(dataFileName);
+        // create file object so we can read from it with a scanner (try with resources)
+    }
+
+    public Inventory(String dataFileName, SalesReport salesReport) {
+        dataFile = new File(dataFileName);
+        this.salesReport = salesReport;
+        // create file object so we can read from it with a scanner (try with resources)
+    }
 
     public List<String> getSlots() {
         return slots;
+    }
+
+    public Map<String, List<Item>> getCurrentInventory() {
+        return currentInventory;
     }
 
     public void loadInventory() {
@@ -23,8 +40,6 @@ public class Inventory {
         String itemType;
         double cost;
 
-// create file object so we can read from it with a scanner (try with resources)
-        File dataFile = new File("vendingmachine.csv");
         try (Scanner dataInput = new Scanner(dataFile)) {
             // try with resources closes after it is done
             while (dataInput.hasNextLine()) {
@@ -44,6 +59,7 @@ public class Inventory {
                 //item type @ parseLine[3] -- "Chip"
 // 4 level if else logic used to create the correct (child) item by reading element at index[3] (which is the item type)
                 // creating new Items using constructor from the item class
+                salesReport.setUpSalesLog(parsedLine[1]);
                 if (parsedLine[3].equals("Chip")) {
                     currentItem = new Chips(parsedLine[1], Double.parseDouble(parsedLine[2])); // makes the price a double (argument needs (string name, double price)
                 } else if (parsedLine[3].equals("Candy")) {

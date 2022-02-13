@@ -3,11 +3,19 @@ package com.techelevator;
 public abstract class Item {
    private String name;
    private Double cost;
+   private String type;
 
     public Item(String name, Double cost) {
         this.name = name;
         this.cost = cost;
     }
+
+    public Item(String name, Double cost, String type) {
+        this.name = name;
+        this.cost = cost;
+        this.type = type;
+    }
+
     //TODO change getBalance to bigDecimal
 
     public String getName() {
@@ -28,6 +36,10 @@ public abstract class Item {
 
     public String getSound(){
         return "Noise";
+    }
+
+    public String getType() {
+        return type;
     }
 
     @Override

@@ -9,6 +9,7 @@ public class VendingMachine {
     // transaction log created and big decimal object for conversions
     Scanner scanner =new Scanner(System.in);
     Inventory inventory;
+    SalesReport salesReport = new SalesReport();
     double balance = 0;
     TransactionLog transactionLog = new TransactionLog("Log.txt");
     BigDecimal balanceBigDecimal;
@@ -17,7 +18,7 @@ public class VendingMachine {
 //create and load the inventory from file
 //print the intro and start main text menu
     public void run() {
-        inventory = new Inventory();
+        inventory = new Inventory("vendingmachine.csv", salesReport);
         inventory.loadInventory();
         // loads the inventory from the text file by ...-- see inventory comments
         System.out.println();
@@ -45,7 +46,7 @@ public class VendingMachine {
         // Pretty up!!
         userInput = scanner.nextLine();
         // user input ^^ needs to be 1, 2, or 3 to pass the while loop (if input is correct while loop is skipped)
-        while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3"))) {
+        while (!(userInput.equals("1") || userInput.equals("2") || userInput.equals("3") || userInput.equals("4"))) {
             System.out.println();
             System.out.println("Invalid Entry, Please Try Again!");
             System.out.println("(1) Display Vending Machine Items");
@@ -73,6 +74,10 @@ public class VendingMachine {
         //go to the exit method to exit if inout is 3
         else if (userInput.equals("3")) {
             exit();
+        }
+        else if(userInput.equals("4")){
+            System.out.println("Generating sales report, saving to file with name containing the current Date and Time");
+            salesReport.newSalesReport();
         }
         //Easter Egg!! need change the while loop above
     }
@@ -131,6 +136,7 @@ public class VendingMachine {
             finishTransaction();
             textMenu(); //Instead of looping back to menu at the finishTransaction, we must do it here for the test to complete
         }
+
 
         userInput = "";
     }
@@ -235,6 +241,7 @@ public class VendingMachine {
         //subtract cost of item from balance and return to purchase menu
         else {
             transactionLog.logSaleAudit(inventory.getItemAtSlot(userInput),userInput,balance);
+            salesReport.logPurchase(inventory.getItemAtSlot(userInput).getName());
 // logged transaction by providing (Item item, String location, Double balance) to logSaleAudit()
             // updating balance after the log  (for the purpose of the log the balance update is calculated manually)
             balance = balance - inventory.getItemAtSlot(userInput).getCost();
