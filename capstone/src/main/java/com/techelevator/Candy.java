@@ -8,6 +8,6 @@ public class Candy extends Item {
 
     @Override
     public String getSound() {
-        return "Munch Much, Yum!";
+        return "Munch Munch, Yum!";
     }
 }

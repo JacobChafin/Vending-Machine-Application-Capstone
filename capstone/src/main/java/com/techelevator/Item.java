@@ -1,6 +1,6 @@
 package com.techelevator;
 
-public class Item {
+public abstract class Item {
    private String name;
    private Double cost;
 
@@ -8,6 +8,7 @@ public class Item {
         this.name = name;
         this.cost = cost;
     }
+    //TODO change getBalance to bigDecimal
 
     public String getName() {
         return name;

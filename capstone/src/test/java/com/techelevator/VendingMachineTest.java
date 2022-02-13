@@ -54,23 +54,35 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void does_finishTransaction_return_twentyone_quarters_and_one_dime_and_one_nickel_from_blance_of_five_forty(){
+    public void does_finishTransaction_return_twentyone_quarters_and_one_dime_and_one_nickel_from_balance_of_five_forty_and_balance_is_zero(){
 
         //Arrange
         testVendingMachine.setBalance(5.40);
-        String expected = "Here is your change!: 21 Quarters 1 Dimes 1 Nickles";
+        String expected = "Here is your change!: 21 Quarters 1 Dimes 1 Nickles\r\n0.00\r\n"; //simulating new line containing balance
 
        //Act
         testVendingMachine.finishTransaction();
-        System.out.println();
-
 
         //Assert
        Assert.assertEquals(expected, outContent.toString());
 
-
-
         }
+
+    @Test
+    public void does_finishTransaction_return_no_quarters_one_dime_one_nickel_from_balance_of_fifteen_cents_and_balance_is_zero(){
+
+        //Arrange
+        testVendingMachine.setBalance(0.15);
+        String expected = "Here is your change!: 0 Quarters 1 Dimes 1 Nickles\r\n0.00\r\n"; //simulating new line containing balance
+
+        //Act
+        testVendingMachine.finishTransaction();
+
+        //Assert
+        Assert.assertEquals(expected, outContent.toString());
+
+    }
+
 
     }
 

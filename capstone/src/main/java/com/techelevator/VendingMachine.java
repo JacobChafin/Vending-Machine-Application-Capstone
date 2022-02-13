@@ -8,7 +8,6 @@ public class VendingMachine {
     // set up scanner and set up variables
     // transaction log created and big decimal object for conversions
     Scanner scanner =new Scanner(System.in);
-    String userInput;
     Inventory inventory;
     double balance = 0;
     TransactionLog transactionLog = new TransactionLog();
@@ -36,7 +35,7 @@ public class VendingMachine {
 
 //run the main text menu
     public void textMenu() {
-
+        String userInput;
     //displays main menu options.
     //asks for user input, continues to ask until a valid entry is made
 
@@ -90,6 +89,7 @@ public class VendingMachine {
 
 //the purchase menu
     public void purchaseMenu() {
+        String userInput;
     //displays purchase menu options
     //asks for user input, continues to ask until valid entry is made
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
@@ -117,27 +117,29 @@ public class VendingMachine {
     //a valid entry has been made (1, 2, 3), do the appropriate action below
 
         //go to the feed money menu if 1
-        if (userInput.equals("1")) {
+        while (userInput.equals("1")) {
             feedMoney();
         }
 
         //go to the select product menu if 2
-        else if (userInput.equals("2")) {
+         if (userInput.equals("2")) {
             selectProduct();
         }
 
         //go to the finishTransaction method to give change if 3
         else if (userInput.equals("3")) {
             finishTransaction();
+            textMenu(); //Instead of looping back to menu at the finishTransaction, we must do it here for the test to complete
         }
 
+        userInput = "";
     }
 
 
 //the feed money menu
     // run this if 1 is selected on purchase menu above
     public void feedMoney() {
-
+        String userInput;
     //displays defined amounts of dollars for the user to feed into the machine sorted by user options 1 = $1, 2= $2, 3 = $5 and 4 = $10
         // 5 is an option to finish feeding money and returns to the purchase menu
     //asks for user input, continues to ask until valid entry is made
@@ -191,13 +193,12 @@ public class VendingMachine {
             // if 5 is entered send back to purchase menu with no further feed action
         }
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
-        //loops until 5 is put in (recursive call, calls itself)
-        feedMoney();
     }
 
 
 //the select product menu
     public void selectProduct() {
+        String userInput;
         //display the inventory for user to choose from and ask for user to input a slot
         inventory.displayInventory();
         System.out.println("Please Enter an (Item Slot)");
@@ -290,7 +291,6 @@ public class VendingMachine {
         System.out.println("Here is your change!: " + numberOfQuarters + " Quarters " + numberOfDimes + " Dimes " + numberOfNickles + " Nickles");
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
         System.out.println(balanceBigDecimal);
-        textMenu();
     }
 
     public void setBalance(double balance) {
