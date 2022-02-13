@@ -83,6 +83,23 @@ public class VendingMachineTest {
 
     }
 
+    @Test
+    public void does_finishTransaction_return_zero_change_from_balance_of_zero_and_balance_is_zero(){
+
+        //Arrange
+        testVendingMachine.setBalance(0.00);
+        String expected = "Here is your change!: 0 Quarters 0 Dimes 0 Nickles\r\n0.00\r\n"; //simulating new line containing balance
+
+        //Act
+        testVendingMachine.finishTransaction();
+
+        //Assert
+        Assert.assertEquals(expected, outContent.toString());
+
+    }
+
+
+
 
     }
 
