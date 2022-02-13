@@ -11,12 +11,18 @@ import java.time.LocalTime;
 public class TransactionLog {
     //writing to a file using different methods to record 3 different types of state change, FEED money, Purchase, and Change
     //create a file object, so we can try with resources and write to file
-    File transactionLogFile = new File("Log.txt");
+  String fileName;
+    File transactionLogFile;
     // represents current date and time which is used in every entry to the log
     LocalDate today = LocalDate.now();
     LocalTime now = LocalTime.now();
 
-//    public void printDateTime(){
+    public TransactionLog(String fileName) {
+        transactionLogFile = new File(fileName);
+        this.fileName = fileName;
+    }
+
+    //    public void printDateTime(){
 //        //time.getHour()
 //        //time.getMinute()
 //        //time.getSecond()
@@ -81,7 +87,7 @@ public class TransactionLog {
         try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
             // telling the writer what to put on a new line of the txt
             //01/01/2016 12:00:15 PM FEED MONEY: $5.00 $10.00
-            dataOutput.println(civilianTime() + " FEED MONEY: $" + fedMoney + ".00 $" + balance);
+            dataOutput.println(civilianTime() + " FEED MONEY: $" + fedMoney + ".00 $" + (balance + fedMoney));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

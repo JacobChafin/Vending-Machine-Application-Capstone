@@ -10,7 +10,7 @@ public class VendingMachine {
     Scanner scanner =new Scanner(System.in);
     Inventory inventory;
     double balance = 0;
-    TransactionLog transactionLog = new TransactionLog();
+    TransactionLog transactionLog = new TransactionLog("Log.txt");
     BigDecimal balanceBigDecimal;
 
 
@@ -175,19 +175,20 @@ public class VendingMachine {
     //OR go back to purchase menu if user is done feeding money (5)
 
         if (userInput.equals("1")) {
+            transactionLog.logFeedMoneyAudit(1,balance);
             balance = balance + 1;
             // after we update the balance we log the feed money event (1,2,3,4) with the updated value and the amount fed
             //2022-02-11 08:51:17 PM FEED MONEY: Fed$-1.00 updated balance-$1.00 (balance was 0 fed a dollar and updated balance became a dollar)
-            transactionLog.logFeedMoneyAudit(1,balance);
+
         } else if (userInput.equals("2")) {
-            balance = balance + 2;
             transactionLog.logFeedMoneyAudit(2,balance);
+            balance = balance + 2;
         } else if (userInput.equals("3")) {
-            balance = balance + 5;
             transactionLog.logFeedMoneyAudit(5,balance);
+            balance = balance + 5;
         } else if (userInput.equals("4")) {
-            balance = balance + 10;
             transactionLog.logFeedMoneyAudit(10,balance);
+            balance = balance + 10;
         } else if (userInput.equals("5")) {
             purchaseMenu();
             // if 5 is entered send back to purchase menu with no further feed action
