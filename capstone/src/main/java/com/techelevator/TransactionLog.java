@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 public class TransactionLog {
     //writing to a file using different methods to record 3 different types of state change, FEED money, Purchase, and Change
-    //create a file object so we can try with resources and write to file
+    //create a file object, so we can try with resources and write to file
     File transactionLogFile = new File("Log.txt");
     // represents current date and time which is used in every entry to the log
     LocalDate today = LocalDate.now();

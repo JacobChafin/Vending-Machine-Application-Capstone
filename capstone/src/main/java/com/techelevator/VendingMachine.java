@@ -217,6 +217,7 @@ public class VendingMachine {
             // if it is the item is out and we print sold out and return to the purchase menu
             System.out.println("SOLD OUT!");
             purchaseMenu();
+            //TODO update bigDecimal for balance
         }
         //if item costs more than the current balance available, indicate and return to purchase menu
         else if (balance < inventory.getItemAtSlot(userInput).getCost()) {
@@ -286,14 +287,14 @@ public class VendingMachine {
         //numberOfDimes = (int) balance (.15) / .1
         // balance = balance - .1 ¢
         //numberOfNickles = (int)
-        System.out.println("Here is your change!: ");
-        System.out.println(numberOfQuarters + " Quarters");
-        System.out.println(numberOfDimes + " Dimes");
-        System.out.println(numberOfNickles + " Nickles");
+        System.out.println("Here is your change!: " + numberOfQuarters + " Quarters " + numberOfDimes + " Dimes " + numberOfNickles + " Nickles");
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
         System.out.println(balanceBigDecimal);
         textMenu();
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }
 
