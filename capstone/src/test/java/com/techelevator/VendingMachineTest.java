@@ -58,7 +58,7 @@ public class VendingMachineTest {
 
         //Arrange
         testVendingMachine.setBalance(5.40);
-        String expected = "Here is your change!: 21 Quarters 1 Dimes 1 Nickles\r\n0.00\r\n"; //simulating new line containing balance
+        String expected = "Here is your change!: 21 Quarters 1 Dimes 1 Nickles\r\nCurrent balance: 0.00\r\n"; //simulating new line containing balance
 
        //Act
         testVendingMachine.finishTransaction();
@@ -73,7 +73,7 @@ public class VendingMachineTest {
 
         //Arrange
         testVendingMachine.setBalance(0.15);
-        String expected = "Here is your change!: 0 Quarters 1 Dimes 1 Nickles\r\n0.00\r\n"; //simulating new line containing balance
+        String expected = "Here is your change!: 0 Quarters 1 Dimes 1 Nickles\r\nCurrent balance: 0.00\r\n"; //simulating new line containing balance
 
         //Act
         testVendingMachine.finishTransaction();
@@ -88,7 +88,7 @@ public class VendingMachineTest {
 
         //Arrange
         testVendingMachine.setBalance(0.00);
-        String expected = "Here is your change!: 0 Quarters 0 Dimes 0 Nickles\r\n0.00\r\n"; //simulating new line containing balance
+        String expected = "Here is your change!: 0 Quarters 0 Dimes 0 Nickles\r\nCurrent balance: 0.00\r\n"; //simulating new line containing balance
 
         //Act
         testVendingMachine.finishTransaction();
