@@ -35,7 +35,7 @@ public class TransactionLogTest {
         Item item = new Candy("Take Five", 0.99);
         String location = "A3";
         double balance = 5.0;
-        String expected = "Take Five A3 $5.0 $4.01";
+        String expected = "Take Five A3 $5.00 $4.00";
         String lastLine = "";
         //Act
         transactionLog.logSaleAudit(item, location, balance);
@@ -62,7 +62,7 @@ public class TransactionLogTest {
         //Arrange
         int fedMoney = 10;
         double balance = 10.0;
-        String expected = "FEED MONEY: $10.00 $20.0";
+        String expected = "FEED MONEY: $10.00 $20.00";
         String lastLine = "";
         //Act
         transactionLog.logFeedMoneyAudit(fedMoney, balance);

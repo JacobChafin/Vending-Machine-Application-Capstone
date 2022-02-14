@@ -9,7 +9,11 @@ import java.time.LocalTime;
 
 public class SalesReport {
     //create map - each entry will hold (String - item name) and (int - # sales of the item)
-    Map<String, Integer> salesLog= new HashMap<>();
+    private Map<String, Integer> salesLog= new HashMap<>();
+
+    public Map<String, Integer> getSalesLog() {
+        return salesLog;
+    }
 
     public void setUpSalesLog(String itemName) {
         //adds an item name to the map with a count of 0 sales
@@ -23,7 +27,7 @@ public class SalesReport {
         salesLog.put(itemName, previousItemSales + 1);
     }
 
-    public void newSalesReport(){
+    public String newSalesReport(){ //returns the filename created
         LocalDateTime now = LocalDateTime.now();
         String fileName = now.toString();
         fileName = fileName.replace(":","-");
@@ -45,6 +49,7 @@ public class SalesReport {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return fileName;
     }
 
 
