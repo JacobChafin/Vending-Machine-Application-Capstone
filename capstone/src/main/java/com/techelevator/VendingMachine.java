@@ -76,8 +76,10 @@ public class VendingMachine {
             exit();
         }
         else if(userInput.equals("4")){
-            System.out.println("Generating sales report, saving to file with name containing the current Date and Time");
+        //creates sales report and saves to file
+        //return to textmenu
             salesReport.newSalesReport();
+            textMenu();
         }
         //Easter Egg!! need change the while loop above
     }
@@ -97,7 +99,7 @@ public class VendingMachine {
         String userInput;
     //displays purchase menu options
     //asks for user input, continues to ask until valid entry is made
-        balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
+        balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
         System.out.println();
         System.out.println("******************************************");
         System.out.println("*******  Please select an option  ********");
@@ -137,8 +139,6 @@ public class VendingMachine {
             textMenu(); //Instead of looping back to menu at the finishTransaction, we must do it here for the test to complete
         }
 
-
-        userInput = "";
     }
 
 
@@ -253,7 +253,7 @@ public class VendingMachine {
             // Removes the item at location userInput and calls the items toString to print its name, price and sound(override from child)
 //both print out and remove item from inventory in one step
             //System.out.println(item.toString)
-            balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.UP);
+            balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
             System.out.println("$" + balanceBigDecimal);
             // print out new balance and return to purchase menu
             purchaseMenu();
@@ -298,7 +298,7 @@ public class VendingMachine {
         //numberOfNickles = (int)
         System.out.println("Here is your change!: " + numberOfQuarters + " Quarters " + numberOfDimes + " Dimes " + numberOfNickles + " Nickles");
         balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
-        System.out.println(balanceBigDecimal);
+        System.out.println("Current balance: " + balanceBigDecimal);
     }
 
     public void setBalance(double balance) {
