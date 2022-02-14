@@ -28,7 +28,7 @@ public class SalesReport {
         String fileName = now.toString();
         fileName = fileName.replace(":","-");
         fileName = fileName.substring(0,19);
-        fileName = "SalesReport" + fileName + ".txt";
+        fileName = "SalesReport-" + fileName + ".txt";
         System.out.println("Generating sales report, saving to file "+ fileName);
         System.out.println();
         File salesReportFile = new File(fileName);

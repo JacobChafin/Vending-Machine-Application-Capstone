@@ -285,6 +285,7 @@ public class VendingMachine {
         numberOfNickles = (int) (balance / .05);
         //subtract value of nickels from remaining balance - balance should be zero now.
         balance = balance - (numberOfNickles * .05);
+        balance = 0.00; // makes it work
 
 
 

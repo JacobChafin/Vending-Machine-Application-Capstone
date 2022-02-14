@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class TransactionLog {
+    BigDecimal balanceBigDecimal;
     //writing to a file using different methods to record 3 different types of state change, FEED money, Purchase, and Change
     //create a file object, so we can try with resources and write to file
   String fileName;
@@ -69,7 +72,9 @@ public class TransactionLog {
         // reference logFeedMoneyAudit as it works the same but with a different println using an extra argument
         // example : //01/01/2016 12:00:20 PM Crunchie B4 $10.00 $8.50  (balance is manually calculated during println)
         try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
-            dataOutput.println(civilianTime() + " " + item.getName() + " " + location + " $" + balance + " $" + (balance-item.getCost()));
+            balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
+            BigDecimal balanceBigDecimalAfter = new BigDecimal(balance -item.getCost()).setScale(2, RoundingMode.DOWN);
+            dataOutput.println(civilianTime() + " " + item.getName() + " " + location + " $" + balanceBigDecimal + " $" + balanceBigDecimalAfter);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -87,7 +92,8 @@ public class TransactionLog {
         try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
             // telling the writer what to put on a new line of the txt
             //01/01/2016 12:00:15 PM FEED MONEY: $5.00 $10.00
-            dataOutput.println(civilianTime() + " FEED MONEY: $" + fedMoney + ".00 $" + (balance + fedMoney));
+            balanceBigDecimal = new BigDecimal(balance + fedMoney).setScale(2, RoundingMode.DOWN);
+            dataOutput.println(civilianTime() + " FEED MONEY: $" + fedMoney + ".00 $" + (balanceBigDecimal));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -98,7 +104,8 @@ public class TransactionLog {
          //01/01/2016 12:01:35 PM GIVE CHANGE: $7.50 $0.00
          // we cheat and manually set balance to zero but BigDecimal always has other plans
          try (PrintWriter dataOutput = new PrintWriter(new FileOutputStream(transactionLogFile, true))) {
-             dataOutput.println(civilianTime() + " GIVE CHANGE: $" + balance + " $0.00");
+             balanceBigDecimal = new BigDecimal(balance).setScale(2, RoundingMode.DOWN);
+             dataOutput.println(civilianTime() + " GIVE CHANGE: $" + balanceBigDecimal + " $0.00");
 
          } catch (FileNotFoundException e) {
              e.printStackTrace();

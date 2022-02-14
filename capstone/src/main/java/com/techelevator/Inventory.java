@@ -34,11 +34,6 @@ public class Inventory {
     }
 
     public void loadInventory() {
-        // temp. item attributes that allow us to create the item and store it in the map (at given location)
-        String location;
-        String name;
-        String itemType;
-        double cost;
 
         try (Scanner dataInput = new Scanner(dataFile)) {
             // try with resources closes after it is done
